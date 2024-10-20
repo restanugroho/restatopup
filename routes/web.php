@@ -1,27 +1,25 @@
 <?php
 
+use App\Http\Controllers\DashController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Halaman utama
 Route::get('/', function () {
     return Inertia::render('Home', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    return Inertia::render('Dashboard', []);
 });
+
+Route::post('/settingweb', [DashController::class, 'store'])->name('Web.store');
+Route::get('/dashboard', [DashController::class, 'index'])->name('dashboard');
+Route::get('/', [HomeController::class, 'index']);
+
 
 require __DIR__.'/auth.php';

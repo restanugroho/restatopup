@@ -10,7 +10,8 @@ import { FaFire, FaSquareWhatsapp, FaTelegram, FaSquareInstagram, FaFacebook, Fa
 import { FiChevronsRight } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 
-const Home = () => {
+const Home = ({ NamaWebnya }) => {
+
     const settings = {
         infinite: true,
         speed: 500,
@@ -32,7 +33,7 @@ const Home = () => {
 
     return (
         <div className='w-full h-auto bg-abu-2 overflow-hidden text-white'>
-            <Nav />
+            <Nav NamaWebnya={NamaWebnya}/>
             <Slider {...settings}>
                 {BannerData.map((data, index) => (
                     <Banner 
