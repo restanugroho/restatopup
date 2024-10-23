@@ -16,14 +16,14 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                'biru-1': '#00A8FF',
-                'biru-2': '#0085FF',
+                'biru-1': 'var(--warna1)',
+                'biru-2': 'var(--warna2)',
                 'abu-1': '#5D5F60',
                 'abu-2': '#2F3132',
                 'abu-3': '#292A2B',
               },
             backgroundImage: {
-                'biru-grad':'linear-gradient(to right, #00A8FF, #0085FF)'
+                'biru-grad':'linear-gradient(to right, var(--warna1), var(--warna2))'
             }
         },
     },

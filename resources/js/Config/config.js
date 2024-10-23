@@ -1,8 +1,7 @@
 // bagian utama website
 
 const Logo = 'https://i.ibb.co.com/GW6QGLX/restaicon.png'
-const NamaWeb = 'Resta Topup'
-const Waicon = ''
+const NamaWeb = 'Resta Topup Coy'
 
 export { Logo, NamaWeb }
 

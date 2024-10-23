@@ -5,21 +5,35 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const getAppName = async () => {
+    try {
+        const response = await fetch('/api/title');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching app name:', error);
+        return 'Laravel';
+    }
+};
 
-createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) =>
-        resolvePageComponent(
-            `./Pages/${name}.jsx`,
-            import.meta.glob('./Pages/**/*.jsx'),
-        ),
-    setup({ el, App, props }) {
-        const root = createRoot(el);
+const initApp = async () => {
+    const appName = await getAppName();
 
-        root.render(<App {...props} />);
-    },
-    progress: {
-        color: '#4B5563',
-    },
-});
+    createInertiaApp({
+        title: (title) => `${title} ${appName}`,
+        resolve: (name) =>
+            resolvePageComponent(
+                `./Pages/${name}.jsx`,
+                import.meta.glob('./Pages/**/*.jsx'),
+            ),
+        setup({ el, App, props }) {
+            const root = createRoot(el);
+            root.render(<App {...props} />);
+        },
+        progress: {
+            color: '#4B5563',
+        },
+    });
+};
+
+initApp();

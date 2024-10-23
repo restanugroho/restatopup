@@ -1,16 +1,21 @@
-import { BannerData, Logo } from "@/Config/config";
+import { BannerData } from "@/Config/config";
 import Banner from "@/Layout/Banner";
 import Nav from "@/Layout/Nav";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from "react-slick";
-import { IoFlash,IoGameController } from "react-icons/io5";
+import { IoFlash, IoGameController } from "react-icons/io5";
 import Kartu from "@/Layout/Kartu";
 import { FaFire, FaSquareWhatsapp, FaTelegram, FaSquareInstagram, FaFacebook, FaRegCopyright } from "react-icons/fa6";
 import { FiChevronsRight } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
+import ForgotPassword from "@/Pages/Auth/ForgotPassword";
+import Login from "@/Pages/Auth/Login";
+import Register from "@/Pages/Auth/Register";
+import { useState } from "react"
+import { Link } from "react-router-dom";
 
-const Home = ({ NamaWebnya }) => {
+const Home = ({ NamaWebnya, Logonya, Authnya }) => {
 
     const settings = {
         infinite: true,
@@ -31,9 +36,18 @@ const Home = ({ NamaWebnya }) => {
         arrows: false
     };
 
+    const [ Auth, Authini ] = useState('')
+    const AuthPindah = (e) => {
+        Authini(e)
+    }
+
     return (
         <div className='w-full h-auto bg-abu-2 overflow-hidden text-white'>
-            <Nav NamaWebnya={NamaWebnya}/>
+            <Nav NamaWebnya={NamaWebnya} Logonya={Logonya}/>
+            { !Authnya && <></>}
+            { Authnya === 'login' && <Login/>}
+            { Authnya === 'register' && <Register/>}
+            { Authnya === 'forgotpassword' && <ForgotPassword/>}
             <Slider {...settings}>
                 {BannerData.map((data, index) => (
                     <Banner 
@@ -95,9 +109,9 @@ const Home = ({ NamaWebnya }) => {
                 <Kartu/>
                 <Kartu/>
             </div>
-            <div id="cs" className="w-full h-40 bg-biru-grad border-y border-y-biru-1 mt-14 font-medium text-2xl text-center p-5 grid justify-center">
+            <div id="cs" className="w-full h-auto bg-biru-grad border-y border-y-biru-1 mt-14 font-medium text-2xl text-center p-5 grid justify-center">
                 <div>
-                    <h1 className="font-bold text-3xl ">Media Sosial Resta Topup</h1>
+                    <h1 className="font-bold text-3xl ">Media Sosial {NamaWebnya}</h1>
                     <h1>Follow Media Sosial Kita Dan Dapatkan Voucernya!</h1>
                 </div>
                 <div className="flex space-x-5 justify-center">
@@ -110,8 +124,8 @@ const Home = ({ NamaWebnya }) => {
             <div id="footer" className="w-full p-16 flex">
                 <div id="restatopup" className="">
                     <div id="logo" className="flex items-center space-x-2 font-bold">
-                        <img src={Logo} alt="" className="w-9"/>
-                        <h1 className="text-2xl">Resta Topup</h1>
+                        <img src={Logonya} alt="" className="w-9"/>
+                        <h1 className="text-2xl">{NamaWebnya}</h1>
                     </div>
                     <p className="w-80 font-light text-2sm text-abu-1 mt-5">
                         Resta Topup adalah website yang menyediakan produk digital, dari topup game sampai kebutuhan listrik dan lain-lainnya. kami memproses pesanan anda dengan otomatis dan pastinya cepat!

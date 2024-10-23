@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@inertiajs/react";
 import { Logo, NamaWeb } from "@/Config/config";
 
 const ForgotPassword = () => {
@@ -37,7 +37,7 @@ const ForgotPassword = () => {
         </div>
         <div className="grid justify-center mx-8 my-8 py-8 lg:my-4 lg:mx-14 space-y-4 lg:space-y-6">
           <div className="flex w-full justify-end">
-            <Link to="/" className="font-medium hover:underline">
+            <Link href="/" className="font-medium hover:underline">
               Kembali
             </Link>
           </div>

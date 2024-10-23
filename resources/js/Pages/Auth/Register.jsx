@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Logo, NamaWeb } from "@/Config/config";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link } from "@inertiajs/react";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -89,7 +89,7 @@ const Login = () => {
           </button>
           <p className="text-sm text-center">
             Sudah Punya Akun?{" "}
-            <Link to="/login" className="text-biru-1 font-medium cursor-pointer hover:underline">
+            <Link href="/login" className="text-biru-1 font-medium cursor-pointer hover:underline">
               Masuk Sekarang
             </Link>
           </p>

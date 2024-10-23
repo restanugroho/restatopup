@@ -1,13 +1,26 @@
 import { useState } from "react";
-import { Logo, NamaWeb } from "@/Config/config";
+import { useForm } from "@inertiajs/react";
+import { Logo, NamaWeb,  } from "@/Config/config";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link } from "@inertiajs/react";
+import InputError from "@/Components/InputError";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 const Login = () => {
+  const { data, setData, post, processing, errors } = useForm({
+    email: '',
+    password: '',
+  });
+
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+    post(route('login'));
   };
 
   return (
@@ -27,23 +40,32 @@ const Login = () => {
 
         <div className="grid justify-center m-14 space-y-2">
           <div className="flex w-full justify-end">
-            <Link to="/" className="font-medium hover:underline">
+            <Link href="/" className="font-medium hover:underline">
               Kembali
             </Link>
           </div>
           <h1 className="font-bold text-2xl">Masuk</h1>
 
+          {/* Input Email */}
           <input
             type="email"
+            id="email"
             placeholder="Masukan Email Kamu"
             className="bg-abu-2 border border-abu-1 rounded-full focus:ring-biru-1 placeholder:text-abu-1 px-4 py-2"
+            value={data.email}
+            onChange={(e) => setData('email', e.target.value)}
           />
+          <InputError message={errors.email} className="mt-2" />
 
+          {/* Input Password */}
           <div className="relative flex items-center">
             <input
               type={showPassword ? "text" : "password"}
+              id="password"
               placeholder="Masukan Password Kamu"
               className="bg-abu-2 border border-abu-1 rounded-full focus:ring-biru-1 placeholder:text-abu-1 px-4 py-3 w-full"
+              value={data.password}
+              onChange={(e) => setData('password', e.target.value)}
             />
             <div
               className="absolute right-4 cursor-pointer"
@@ -52,12 +74,20 @@ const Login = () => {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </div>
           </div>
+          <InputError message={errors.password} className="mt-2" />
 
-          <Link to="/forgotpassword" className="text-sm text-biru-1 cursor-pointer ml-2">Lupa Password?</Link>
+          <Link to="/forgotpassword" className="text-sm text-biru-1 cursor-pointer ml-2">
+            Lupa Password?
+          </Link>
 
-          <button type="submit" className="bg-biru-grad w-64 py-2 rounded-full">
+          <PrimaryButton
+            type="submit"
+            className="bg-biru-grad w-64 py-2 rounded-full"
+            onClick={submit}
+            disabled={processing}
+          >
             Masuk
-          </button>
+          </PrimaryButton>
 
           <p className="text-sm text-center">
             Belum Punya Akun? <Link to="/register" className="text-biru-1 cursor-pointer">Daftar Sekarang</Link>

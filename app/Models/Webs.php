@@ -9,5 +9,10 @@ class Webs extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+        'urlLogo',
+        'warna1',
+        'warna2',
+    ];
 }

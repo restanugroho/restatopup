@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { BsInboxesFill } from "react-icons/bs";
-import { useForm } from "@inertiajs/react"
+import { useForm, Link } from "@inertiajs/react"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { NamaWeb } from "@/Config/config";
 
 const Sub = [
     { id: 0, nama: 'Dashboard' },
@@ -15,27 +14,44 @@ const Sub = [
     { id: 6, nama: 'Pesanan Manual' },
 ];
 
-const Dashboard = ({ NamaWebnya }) => {
+const Dashboard = ({ NamaWebnya, Logonya, Warna1nya, Warna2nya}) => {
+
     const [Subnya, setSubnya] = useState(0);
     const gantiSubnya = (e) => {
         setSubnya(e);
     };
 
+    // UNTUK MENGUBAH WEBSITE
     const { data, setData, post, errors} = useForm({
-        NamaWeb: NamaWebnya || ''
+        NamaWeb: NamaWebnya || '',
+        urlLogo: Logonya || '',
+        warna1: Warna1nya,
+        warna2: Warna2nya,
     })
     useEffect(() => {
         setData('NamaWeb', NamaWebnya);
     }, [NamaWebnya]);
+    useEffect(() => {
+        document.documentElement.style.setProperty('--toastify-color-success', Warna1nya)
+    }, [Warna1nya])
     const isiNamaWeb = (e) => {
         setData('NamaWeb', e.target.value);
     };
-    const kirimNamaWeb = (e) => {
+    const isiUrlLogo = (e) => {
+        setData('urlLogo', e.target.value)
+    }
+    const isiWarna1 = (e) => {
+        setData('warna1', e.target.value)
+    }
+    const isiWarna2 = (e) => {
+        setData('warna2', e.target.value)
+    }
+    const kirimDataWeb = (e) => {
         e.preventDefault();
         post('/settingweb', {
             onSuccess: () => {
                 console.log('Success');
-                toast.success('Nama Website ' + NamaWeb + ' Berhasil Di Simpan')
+                toast.success('Pengaturan Berhasil Di Simpan')
             },
             onError: (errors) => {
                 console.error('Error:', errors);
@@ -47,9 +63,12 @@ const Dashboard = ({ NamaWebnya }) => {
         <div className="bg-abu-2 text-white w-full h-auto absolute">
             <ToastContainer />
             <nav className="bg-abu-3 w-full h-auto flex justify-between items-center px-10 border-b border-abu-1 fixed z-10">
-                <h1 className="font-bold text-3xl py-4">Dashboard</h1>
+                <div className="flex space-x-2 items-center">
+                    <img src={Logonya} alt="" className="max-w-12" />
+                    <h1 className="font-bold text-2xl py-4">Dashboard</h1>
+                </div>
                 <input type="search" placeholder="Cari di Dashboard..." className="w-96 h-10 bg-abu-2 border-none rounded-full placeholder:text-abu-1 placeholder:pl-24 focus:text-white focus:ring-abu-1" />
-                <button to="/" className="hover:text-biru-1">Kembali ke Client</button>
+                <Link href="/" className="hover:text-biru-1">Kembali ke Client</Link>
             </nav>
             <div className="text-sm space-x-8 flex mx-10 mt-20 border-b border-abu-1 pb-4">
                 {
@@ -134,26 +153,71 @@ const Dashboard = ({ NamaWebnya }) => {
             {Subnya === 3 && (
                 <div className="w-full h-auto text-2xl">
                     <div className="m-10 space-y-5">
-                        <div className="space-y-3">
+                        <form onSubmit={kirimDataWeb} className="space-y-3">
                             <h1>Logo Website</h1>
-                            <input type="url" placeholder="Masukan Link Logo Website" className="bg-abu-3 rounded-full border-abu-1 placeholder:text-abu-1 w-[500px] h-[60px]" />
-                        </div>
-                        <form onSubmit={kirimNamaWeb} className="space-y-3">
+                            <div className="flex items-center">
+                                <input 
+                                    type="text" 
+                                    placeholder="Masukan Link Logo Website" 
+                                    value={data.urlLogo} 
+                                    onChange={isiUrlLogo} 
+                                    className="bg-abu-3 rounded-full border-abu-1 placeholder:text-abu-1 w-[500px] h-[60px]" 
+                                />
+                            </div>
+                            
                             <h1>Nama Website</h1>
                             <div className="flex items-center">
-                                <input value={data.NamaWeb} onChange={isiNamaWeb} type="text" placeholder="Masukan Nama Logo Website" className="bg-abu-3 rounded-full border-abu-1 placeholder:text-abu-1 w-[500px] h-[60px]" />
-                                <button type="submit" className="ml-3 bg-biru-grad px-6 py-2 rounded-full">Kirim</button>
+                                <input 
+                                    value={data.NamaWeb} 
+                                    onChange={isiNamaWeb} 
+                                    type="text" 
+                                    placeholder="Masukan Nama Website" 
+                                    className="bg-abu-3 rounded-full border-abu-1 placeholder:text-abu-1 w-[500px] h-[60px]" 
+                                />
+                                {errors.NamaWeb && <div className="text-red-500">{errors.NamaWeb}</div>}
                             </div>
-                            {errors.NamaWeb && <div className="text-red-500">{errors.NamaWeb}</div>}
+
+                            <div className="space-y-3">
+                                <h1>Warna 1 Website</h1>
+                                <div className="bg-abu-3 rounded-full border border-abu-1 w-[500px] h-[60px] overflow-hidden flex items-center justify-center relative">
+                                    <input
+                                        type="color"
+                                        value={data.warna1}
+                                        onChange={isiWarna1}
+                                        className="absolute opacity-0 cursor-pointer w-full h-full" 
+                                    />
+                                    <div
+                                        className="w-full h-full rounded-full border-none"
+                                        style={{ backgroundColor: data.warna1 }}
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <h1>Warna 2 Website</h1>
+                                <div className="bg-abu-3 rounded-full border border-abu-1 w-[500px] h-[60px] overflow-hidden flex items-center justify-center relative">
+                                    <input
+                                        type="color"
+                                        value={data.warna2}
+                                        onChange={isiWarna2}
+                                        className="absolute opacity-0 cursor-pointer w-full h-full" 
+                                    />
+                                    <div
+                                        className="w-full h-full rounded-full border-none"
+                                        style={{ backgroundColor: data.warna2 }}
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <h1>Konfirmasi Website Pengaturanmu</h1>
+                            
+                            <button 
+                                type="submit" 
+                                className="text-lg mt-20 bg-biru-grad px-6 py-2 rounded-full w-[500px] h-[60px]"
+                            >
+                                Simpan Semua Pengaturan
+                            </button>
                         </form>
-                        <div className="space-y-3">
-                            <h1>Logo Website</h1>
-                            <input type="url" placeholder="Masukan Link Logo Website" className="bg-abu-3 rounded-full border-abu-1 placeholder:text-abu-1 w-[500px] h-[60px]" />
-                        </div>
-                        <div className="space-y-3">
-                            <h1>Nama Website</h1>
-                            <input type="text" placeholder="Masukan Nama Logo Website" className="bg-abu-3 rounded-full border-abu-1 placeholder:text-abu-1 w-[500px] h-[60px]" />
-                        </div>
                     </div>
                 </div>
             )}
